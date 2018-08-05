@@ -1,0 +1,77 @@
+<style>
+            #index{
+            list-style: none;
+            border: purple 1px solid;
+        }
+        #index>li{
+            display: inline;
+            margin-right: 50px;
+            font-size: 25px;
+            text-align: center;
+        }
+    .dh{
+        text-decoration: none;
+    }
+    #log{
+        list-style: none;
+        display: inline;
+        width: 100px;
+    }
+    .user>ul{
+        list-style: none;
+        display: none;
+    }
+    .user:hover ul{
+        display: block;
+    }
+</style>
+<table width="100%" border="0" cellspacing="0">
+    <tr bgcolor="#F8F8F8" class="首行">
+        <td width="146">欢迎来到餐宜家家具销量统计！</td>
+        <td width="140" height="0">
+            {% if request.session.cyj_user %}
+                <ul id="log">
+                    <li class="user">Hello!<a>{{ request.session.cyj_user.uname }}</a>
+                        <ul id="user_info">
+                            <li><a href="{% url 'u_logout' %}">
+                                登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;出</a></li>
+                            <li><a href="{% url 'list' %}">我的收藏</a></li>
+                            <li><a href="{% url 'change_passwd' %}">修改密码</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% else %}
+                <a href="{% url 'u_login' %}" class="login">[登录]</a>
+            {% endif %}
+            |
+            <a href="{% url 'u_register' %}" class="register">[注册]</a></td>
+        <td width="126">&nbsp;</td>
+        <td width="163">免费客服热线：15770871500</td>
+        <td width="78">| 设置为主页</td>
+        <td width="58">| 客服中心</td>
+        <td width="79">| 添加收藏</td>
+        <td width="52">&nbsp;</td>
+    </tr>
+</table>
+<table width="100%" border="0">
+    <tr>
+        <td height="0" bgcolor="#FFFFFF"><img src="/static/sucai/第6章/logo.png" width="100" height="91"/></td>
+        <td><img src="/static/sucai/第6章/搜索.jpg" width="660px" height="100"/></td>
+    </tr>
+</table>
+<table width="100%" border="0">
+    <tr>
+        <td width="100%">
+            <ul id="index">
+                <li><a class="dh" href="{% url 'home' %}">首页</a></li>
+                <li>|<a class="dh" href="{% url 'wf' %}">卧房</a></li>
+                <li>|<a class="dh" href="{% url 'kt' %}">客厅</a></li>
+                <li>|<a class="dh" href="{% url 'ct' %}">餐厅</a></li>
+                <li>|<a class="dh" href="{% url 'sf' %}">书房</a></li>
+                <li>|<a class="dh" href="">儿童房</a></li>
+                <li>|<a class="dh" href="">卫浴</a></li>
+                <li>|<a class="dh" href="">定制家具</a></li>
+            </ul>
+        </td>
+    </tr>
+</table>

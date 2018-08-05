@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %}
+            餐宜家
+        {% endblock %}
+    </title>
+    {% block jb %}
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/script.js"></script>
+        <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="/static/css/style.css" rel="stylesheet">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {% endblock %}
+    <style>
+        {% block style %}
+        {% endblock %}
+    </style>
+</head>
+
+<body>
+{% include  'partials/navbar.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+{% include 'partials/footer.html' %}
+</body>
+</html>
+{% block script %}
+
+{% endblock %}

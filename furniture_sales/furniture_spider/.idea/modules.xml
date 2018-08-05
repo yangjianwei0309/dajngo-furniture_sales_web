@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../../../../spider/day09/Dushu/Dushu/.idea/Dushu.iml" filepath="$PROJECT_DIR$/../../../../../spider/day09/Dushu/Dushu/.idea/Dushu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../day10/dygod_oumei/.idea/dygod_oumei.iml" filepath="$PROJECT_DIR$/../../../day10/dygod_oumei/.idea/dygod_oumei.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/fashion_info.iml" filepath="$PROJECT_DIR$/.idea/fashion_info.iml" />
+    </modules>
+  </component>
+</project>

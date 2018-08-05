@@ -1,0 +1,132 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+    餐厅销量统计
+{% endblock %}
+{% block style %}
+    .pic{
+        width: 243px;
+        height: 186px;
+    }
+    #show td{
+        margin:100px;
+    }
+{% endblock %}
+{% block content %}
+    <table id="show">
+        <tr>
+            <td colspan="3">餐厅家具 按销量从大至小排名</td>
+            <td></td>
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4" %}
+                <td width="300px" class="img"><img class="pic" src="/static/images/canting/{{ canting.img }}"></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4" %}
+                <td width="300" class="content_font">{{ canting.content }}</td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ canting.price }}元</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ canting.sales }}笔</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ canting.url }}" target="_blank">淘宝链接</a>
+                    {% if canting.isfavorite %}
+                    <span class="isfavorite glyphicon glyphicon-heart"
+                    aria-valuetext="{{ canting.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                    aria-valuetext="{{ canting.id }}"></span>
+                {% endif %}
+                </td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+            <tr>
+            {% for canting in list|slice:"4:8" %}
+                <td width="300px" class="img"><img class="pic" src="/static/images/canting/{{ canting.img }}"></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4:8" %}
+                <td width="300" class="content_font">{{ canting.content }}</td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4:8" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ canting.price }}元</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4:8" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ canting.sales }}笔</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for canting in list|slice:"4:8" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ canting.url }}" target="_blank">淘宝链接</a>
+                    {% if canting.isfavorite %}
+                    <span class="isfavorite glyphicon glyphicon-heart"
+                    aria-valuetext="{{ canting.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                    aria-valuetext="{{ canting.id }}"></span>
+                {% endif %}
+                </td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}
+{% block script %}
+<script>
+    $(".isfavorite").click(function () {
+        if ($(this).hasClass("glyphicon glyphicon-heart-empty"))
+        {
+            $(this).removeClass("glyphicon glyphicon-heart-empty");
+            $(this).addClass("glyphicon glyphicon-heart");
+        }
+        else {
+            $(this).removeClass("glyphicon glyphicon-heart");
+            $(this).addClass("glyphicon glyphicon-heart-empty");
+        }
+        var id = $(this).attr("aria-valuetext");
+        console.log(id)
+       $.ajax({
+           type:"POST",
+           url:"http://127.0.0.1:8000/index/canting/",
+           data:{
+               "id":id
+           },
+           contentType:"application/json",
+           success:function (data) {
+               alert(data);
+           },
+       })
+    })
+</script>
+{% endblock %}

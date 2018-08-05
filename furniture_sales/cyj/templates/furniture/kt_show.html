@@ -1,0 +1,132 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+    客厅家具销量统计
+{% endblock %}
+{% block style %}
+    .pic{
+        width: 243px;
+        height: 186px;
+    }
+    #show td{
+        margin:100px;
+    }
+{% endblock %}
+{% block content %}
+    <table id="show">
+        <tr>
+            <td colspan="3">客厅家具 按销量从大至小排名</td>
+            <td></td>
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4" %}
+                <td width="300px" class="img"><img class="pic" src="/static/images/keting/{{ keting.img }}"></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4" %}
+                <td width="300" class="content_font">{{ keting.content }}</td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ keting.price }}元</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ keting.sales }}笔</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ keting.url }}" target="_blank">淘宝链接</a>
+                    {% if keting.isfavorite %}
+                    <span class="isfavorite glyphicon glyphicon-heart"
+                    aria-valuetext="{{ keting.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                    aria-valuetext="{{ keting.id }}"></span>
+                {% endif %}
+                </td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+            <tr>
+            {% for keting in list|slice:"4:8" %}
+                <td width="300px" class="img"><img class="pic" src="/static/images/keting/{{ keting.img }}"></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4:8" %}
+                <td width="300" class="content_font">{{ keting.content }}</td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4:8" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ keting.price }}元</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4:8" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ keting.sales }}笔</span></td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for keting in list|slice:"4:8" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ keting.url }}" target="_blank">淘宝链接</a>
+                    {% if keting.isfavorite %}
+                    <span class="isfavorite glyphicon glyphicon-heart"
+                    aria-valuetext="{{ keting.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                    aria-valuetext="{{ keting.id }}"></span>
+                {% endif %}
+                </td>
+                <td width="100px"><td>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}
+{% block script %}
+<script>
+    $(".isfavorite").click(function () {
+        if ($(this).hasClass("glyphicon glyphicon-heart-empty"))
+        {
+            $(this).removeClass("glyphicon glyphicon-heart-empty");
+            $(this).addClass("glyphicon glyphicon-heart");
+        }
+        else {
+            $(this).removeClass("glyphicon glyphicon-heart");
+            $(this).addClass("glyphicon glyphicon-heart-empty");
+        }
+        var id = $(this).attr("aria-valuetext");
+        console.log(id)
+       $.ajax({
+           type:"POST",
+           url:"http://127.0.0.1:8000/index/keting/",
+           data:{
+               "id":id
+           },
+           contentType:"application/json",
+           success:function (data) {
+               alert(data);
+           },
+       })
+    })
+</script>
+{% endblock %}

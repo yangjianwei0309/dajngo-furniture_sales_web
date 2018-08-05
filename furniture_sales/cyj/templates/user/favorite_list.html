@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    我的收藏
+{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+    <h3 style="color: #e43725;">收藏列表</h3>
+    {% if list %}
+    <div class="list" style="width: 100%;">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>家具种类</td>
+                    <td>家具</td>
+                    <td>销量</td>
+                    <td>价格</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for furniture in list %}
+                <tr>
+                    <td>{{ furniture.fname }}</td>
+                    <td><div style="width: 100px;">{{ furniture.content }}</div></td>
+                    <td>{{ furniture.sales }}</td>
+                    <td>{{ furniture.price }}</td>
+                    <td><form>
+                        <input type="submit" value="取消收藏">
+                    </form></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+    {% else %}
+        <p>您还没有收藏任何东西，赶紧去行动吧！</p>
+    {% endif %}
+{% endblock %}

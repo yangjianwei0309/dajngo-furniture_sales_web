@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    注册
+{% endblock %}
+{% block content %}
+<form role="form" action="{% url 'u_register' %}" method="post">
+    <div class="form-group">
+        <input type="text" name="username">
+    </div>
+    <div class="form-group">
+        <input type="text" name="password">
+    </div>
+    <div class="form-group">
+        <input type="text" name="email">
+        {% if error %}
+            <p style="color: red; font-size: 18px;">{{ error }}</p>
+        {% endif %}
+    </div>
+    <input type="submit" value="注 册" class="btn">
+    {% csrf_token %}
+</form>
+{% endblock %}
