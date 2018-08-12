@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from cyj_user import views
+from api.urls import api
 
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^$',views.home,name="home"),
     url(r'^index/',include("cyj_furniture.urls")),
     url(r'^user/',include("cyj_user.urls")),
+    url(r'api/',include(api.urls)),
 ]

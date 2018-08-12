@@ -1,0 +1,19 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    搜索
+{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+    <h3 style="color: #e43725;">搜索结果</h3>
+    {% if search_list %}
+    <div class="list" style="width: 100%;">
+        <table width="100%">
+           {% for furniture in search_list %}
+               <tr><td><a href="">{{ furniture.content }}</a></td><tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

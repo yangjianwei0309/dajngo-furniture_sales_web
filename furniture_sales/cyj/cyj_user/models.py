@@ -11,6 +11,9 @@ class CYJ_user(models.Model):
     # 关联django自带用户，以便之后的登录登出装饰器
     user = models.ForeignKey(User)
 
+    def __str__(self):
+        return self.uname
+
     def to_dict(self):
         return dict(uid=self.id,
                     uname=self.uname,

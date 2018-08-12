@@ -5,11 +5,11 @@
 {% endblock %}
 {% block style %}
     .pic{
-        width: 243px;
-        height: 186px;
+    width: 243px;
+    height: 186px;
     }
     #show td{
-        margin:100px;
+    margin:100px;
     }
 {% endblock %}
 {% block content %}
@@ -19,114 +19,148 @@
             <td></td>
         </tr>
         <tr>
-            {% for keting in list|slice:"4" %}
+            {% for keting in list.object_list|slice:"4" %}
                 <td width="300px" class="img"><img class="pic" src="/static/images/keting/{{ keting.img }}"></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4" %}
+            {% for keting in list.object_list|slice:"4" %}
                 <td width="300" class="content_font">{{ keting.content }}</td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4" %}
+            {% for keting in list.object_list|slice:"4" %}
                 <td width="300" class="price_font">价格:
                     <span style="color: orange;">{{ keting.price }}元</span></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4" %}
+            {% for keting in list.object_list|slice:"4" %}
                 <td width="300" class="sales">销量：
                     <span style="color: red">{{ keting.sales }}笔</span></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4" %}
+            {% for keting in list.object_list|slice:"4" %}
                 <td width="300" class="url">链接：
                     <a href="{{ keting.url }}" target="_blank">淘宝链接</a>
                     {% if keting.isfavorite %}
-                    <span class="isfavorite glyphicon glyphicon-heart"
-                    aria-valuetext="{{ keting.id }}"></span>
+                        <span class="isfavorite glyphicon glyphicon-heart"
+                              aria-valuetext="{{ keting.id }}"></span>
                     {% else %}
                         <span class="isfavorite glyphicon glyphicon-heart-empty"
-                    aria-valuetext="{{ keting.id }}"></span>
-                {% endif %}
+                              aria-valuetext="{{ keting.id }}"></span>
+                    {% endif %}
                 </td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
-            <tr>
-            {% for keting in list|slice:"4:8" %}
+        <tr>
+            {% for keting in list.object_list|slice:"4:8" %}
                 <td width="300px" class="img"><img class="pic" src="/static/images/keting/{{ keting.img }}"></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4:8" %}
+            {% for keting in list.object_list|slice:"4:8" %}
                 <td width="300" class="content_font">{{ keting.content }}</td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4:8" %}
+            {% for keting in list.object_list|slice:"4:8" %}
                 <td width="300" class="price_font">价格:
                     <span style="color: orange;">{{ keting.price }}元</span></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4:8" %}
+            {% for keting in list.object_list|slice:"4:8" %}
                 <td width="300" class="sales">销量：
                     <span style="color: red">{{ keting.sales }}笔</span></td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
         <tr>
-            {% for keting in list|slice:"4:8" %}
+            {% for keting in list.object_list|slice:"4:8" %}
                 <td width="300" class="url">链接：
                     <a href="{{ keting.url }}" target="_blank">淘宝链接</a>
                     {% if keting.isfavorite %}
-                    <span class="isfavorite glyphicon glyphicon-heart"
-                    aria-valuetext="{{ keting.id }}"></span>
+                        <span class="isfavorite glyphicon glyphicon-heart"
+                              aria-valuetext="{{ keting.id }}"></span>
                     {% else %}
                         <span class="isfavorite glyphicon glyphicon-heart-empty"
-                    aria-valuetext="{{ keting.id }}"></span>
-                {% endif %}
+                              aria-valuetext="{{ keting.id }}"></span>
+                    {% endif %}
                 </td>
-                <td width="100px"><td>
+                <td width="100px">
+                <td>
             {% endfor %}
         </tr>
     </table>
+    <nav style="text-align: center;margin-top:50px;" aria-label="Page navigation">
+    <ul class="pagination">
+    {% if list.has_previous %}
+        <li>
+            <a href="?page={{ list.previous_page.number }}" aria-label="上一页">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+    {% endif %}
+    {% for pg in list.paginator.page_range %}
+        {% if list.number == pg %}
+            <li class="active">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </li>
+        {% else %}
+            <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if list.has_next %}
+        <li>
+            <a href="?page={{ list.next_page.number }}" aria-label="下一页">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+    {% endif %}
 {% endblock %}
 {% block script %}
-<script>
-    $(".isfavorite").click(function () {
-        if ($(this).hasClass("glyphicon glyphicon-heart-empty"))
-        {
-            $(this).removeClass("glyphicon glyphicon-heart-empty");
-            $(this).addClass("glyphicon glyphicon-heart");
-        }
-        else {
-            $(this).removeClass("glyphicon glyphicon-heart");
-            $(this).addClass("glyphicon glyphicon-heart-empty");
-        }
-        var id = $(this).attr("aria-valuetext");
-        console.log(id)
-       $.ajax({
-           type:"POST",
-           url:"http://127.0.0.1:8000/index/keting/",
-           data:{
-               "id":id
-           },
-           contentType:"application/json",
-           success:function (data) {
-               alert(data);
-           },
-       })
-    })
-</script>
+    <script>
+        $(".isfavorite").click(function () {
+            if ($(this).hasClass("glyphicon glyphicon-heart-empty")) {
+                $(this).removeClass("glyphicon glyphicon-heart-empty");
+                $(this).addClass("glyphicon glyphicon-heart");
+            }
+            else {
+                $(this).removeClass("glyphicon glyphicon-heart");
+                $(this).addClass("glyphicon glyphicon-heart-empty");
+            }
+            var id = $(this).attr("aria-valuetext");
+            console.log(id)
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8000/index/keting/",
+                data: {
+                    "id": id
+                },
+                contentType: "application/json",
+                success: function (data) {
+                    alert(data);
+                },
+            })
+        })
+    </script>
 {% endblock %}

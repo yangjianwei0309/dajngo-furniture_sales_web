@@ -56,7 +56,17 @@
 <table width="100%" border="0">
     <tr>
         <td height="0" bgcolor="#FFFFFF"><img src="/static/sucai/第6章/logo.png" width="100" height="91"/></td>
-        <td><img src="/static/sucai/第6章/搜索.jpg" width="660px" height="100"/></td>
+        <td>
+            <form action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <input type="search" name="search" placeholder="请输入您想查询的内容">
+                <button type="submit">搜索</button>
+            </form>
+            {% if error %}
+                <b style="color:red;">{{ error }}</b>
+            {% endif %}
+        </td>
+{#        <td><img src="/static/sucai/第6章/搜索.jpg" width="660px" height="100"/></td>#}
     </tr>
 </table>
 <table width="100%" border="0">

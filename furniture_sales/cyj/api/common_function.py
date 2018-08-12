@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from cyj_furniture.models import Furniture
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from cyj_furniture.models import Furniture,TypeInfo
 from cyj_user.models import CYJ_user
 
 def ajax_post(request):
@@ -34,3 +35,40 @@ def ajax_post(request):
 
     return HttpResponse("请先登录！")
 
+"""
+以分页形式来获取家具商品的信息
+"""
+def get_furnitures(request,category):
+    typelist = TypeInfo.objects.all()
+    # 获取所有对象
+    furnitures = typelist[category].furniture_set.order_by("-sales")
+    furniture_list = []
+    if request.session.get("cyj_user"):
+        for furniture in furnitures:
+            # 获取登录对象
+            cyj_user = CYJ_user.objects.get(uname=request.session["cyj_user"]["uname"])
+            user_furnitures = cyj_user.furniture_set.all()
+            for user_furniture in user_furnitures:
+                if furniture.id == user_furniture.id:
+                    furniture.isfavorite = 1
+                    break
+                else:
+                    furniture.isfavorite = 0
+            furniture_dict = furniture.to_dict()
+            furniture_list.append(furniture_dict)
+    else:
+        for furniture in furnitures:
+            furniture.isfavorite = 0
+            furniture_dict = furniture.to_dict()
+            furniture_list.append(furniture_dict)
+    # 实例化结果集 每一页8条数据，少于2条合并
+    paginator = Paginator(furniture_list,8)
+    page = request.GET.get("page")
+    try:
+        customer = paginator.page(page)
+    except PageNotAnInteger:
+        customer = paginator.page(1)
+    except EmptyPage:
+        customer = paginator.page(paginator.num_pages)
+    # 返回列表
+    return customer
