@@ -63,4 +63,4 @@ class User_Login(Resource):
         request.session["cyj_user"] = log_user
         # favorite_furniture = check_user.furniture_set.all()
         # print(favorite_furniture)
-        return JsonResponse(log_user)
+        return JsonResponse(log_user,safe=False)

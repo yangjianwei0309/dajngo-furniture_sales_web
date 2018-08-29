@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'cyj_user',
     'cyj_admin',
     'cyj_furniture',
+    'djcelery'
 ]
 
 MIDDLEWARE = [
@@ -135,4 +138,27 @@ STATIC_ROOT = "/home/gangge/Desktop/item/staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = 'media/images'
 
+##########################################celery##########################################
+import djcelery
+djcelery.setup_loader() # 初始化
 
+BROKEN_URL = 'redis://127.0.0.1:6379/11'
+CELERY_IMPORTS = ('cyj_user.tasks')
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_SCHEDULE = {
+    'timedsq':{
+    'task':'cyj_user.tasks.send_email',
+    'schedule':timedelta(seconds=120),
+    'args':()
+    },
+}
+
+##########send mail########################
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'yangjianwei0309@163.com'
+EMAIL_HOST_PASSWORD = "1250668603yjw"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

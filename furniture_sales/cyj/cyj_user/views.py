@@ -121,3 +121,11 @@ def change_passwd(request):
         return redirect(reverse("u_login"))
         
 
+def publish(request,id):
+    data = request.body.decode()
+    try:
+        cyj_user = CYJ_user.objects.get(pk=id)
+    except:
+        pass
+
+

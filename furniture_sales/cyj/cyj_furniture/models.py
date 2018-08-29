@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from cyj_user.models import CYJ_user
 
@@ -35,4 +36,29 @@ class Furniture(models.Model):
     class Meta:
         db_table = "furniture"
 
+
+class DeliveryAddress(models.Model):
+    name = models.CharField(max_length=20,verbose_name="收件人")
+
+    phone = models.CharField(max_length=12,verbose_name="收件人电话")
+
+    address_detail = models.TextField(default='',
+                                      verbose_name="收获地址")
+    user = models.ForeignKey(CYJ_user,
+                             on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'axf_address'
+
+class Cart(models.Model):
+    user = models.ForeignKey(CYJ_user,
+                             on_delete=models.CASCADE)
+
+    goods = models.ForeignKey(Furniture,
+                              on_delete=models.CASCADE)
+
+    cnt = models.IntegerField(default=1)
+
+    # 是否被选择
+    isSelected = models.BooleanField(default=True)
 

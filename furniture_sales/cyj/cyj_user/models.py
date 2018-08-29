@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 # Create your models here.
 
 class CYJ_user(models.Model):
@@ -22,3 +21,18 @@ class CYJ_user(models.Model):
 
     class Meta:
         db_table = "user"
+
+class Comment(models.Model):
+    content = models.CharField(max_length=500,verbose_name="内容")
+    created_time = models.DateTimeField(auto_now_add=True,verbose_name="创建时间")
+    is_delete = models.BooleanField(default=0,blank=True,verbose_name="是否删除")
+    # 外键关联
+    user = models.ForeignKey(CYJ_user,verbose_name="作者")
+    from cyj_furniture.models import Furniture
+    furniture = models.ForeignKey(Furniture,verbose_name="所属商品")
+
+    def __str__(self):
+        return self.user
+
+    class Meta:
+        db_table = "comment"

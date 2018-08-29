@@ -4,13 +4,16 @@
     卧房销量统计
 {% endblock %}
 {% block style %}
-    .pic{
-    width: 243px;
-    height: 186px;
-    }
-    #show td{
-    margin:100px;
-    }
+    <style>
+        .pic {
+            width: 243px;
+            height: 186px;
+        }
+
+        #show td {
+            margin: 100px;
+        }
+    </style>
 {% endblock %}
 {% block content %}
     <table id="show">
@@ -20,7 +23,11 @@
         </tr>
         <tr>
             {% for wofang in list.object_list|slice:"4" %}
-                <td width="300px" class="img"><img class="pic" src="/static/images/wofang/{{ wofang.img }}"></td>
+                <td width="300px" class="img">
+                    <a href="{% url 'detail' wofang.id %}">
+                        <img class="pic" src="/static/images/wofang/{{ wofang.img }}">
+                    </a>
+                </td>
                 <td width="100px">
                 <td>
             {% endfor %}
@@ -115,28 +122,28 @@
     <ul class="pagination">
     {% if list.has_previous %}
         <li>
-        <a href="?page={{ list.previous_page.number }}" aria-label="上一页">
-            <span aria-hidden="true">&lt;</span>
-        </a>
+            <a href="?page={{ list.previous_page.number }}" aria-label="上一页">
+                <span aria-hidden="true">&lt;</span>
+            </a>
         </li>
     {% endif %}
     {% for pg in list.paginator.page_range %}
-    {% if list.number == pg %}
-        <li class="active">
-        <a href="?page={{ pg }}">{{ pg }}</a>
-        </li>
+        {% if list.number == pg %}
+            <li class="active">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </li>
         {% else %}
-        <li><a href="?page={{ pg }}">{{ pg }}</a></li>
-    {% endif %}
+            <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
     {% endfor %}
     {% if list.has_next %}
         <li>
-        <a href="?page={{ list.next_page.number }}" aria-label="下一页">
-            <span aria-hidden="true">&gt;</span>
-        </a>
+            <a href="?page={{ list.next_page.number }}" aria-label="下一页">
+                <span aria-hidden="true">&gt;</span>
+            </a>
         </li>
     {% endif %}
-    
+
 {% endblock %}
 {% block script %}
     <script>

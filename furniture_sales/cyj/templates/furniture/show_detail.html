@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    {% block jb %}
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/script.js"></script>
+        <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="/static/css/style.css" rel="stylesheet">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    {% endblock %}
+</head>
+{% block style %}
+    <style>
+        body {
+            margin: 20px;
+            padding: 5px;
+        }
+
+        .container {
+            margin: 10px;
+            padding: 0;
+            width: 900px;
+            height: 400px;
+            background: aliceblue;
+        }
+
+        .pic {
+            margin: 0;
+            padding: 0;
+            width: 446px;
+            height: 296px;
+            z-index: 1;
+        }
+
+        .area {
+            margin: 10px;
+            padding: 0;
+            width: 500px;
+            height: 400px;
+        }
+    #show {
+        float: left;
+    }
+    #op{
+        float: left;
+    }
+    </style>
+{% endblock %}
+<body>
+<div class="container">
+    <div id="show">
+        <img class="pic" src="/static/images/wofang/{{ furniture.img }}">
+        <div>
+            <label>
+                <span class="cont">{{ furniture.content }}</span>
+            </label>
+        </div>
+        <div id="price">
+            <label style="color: orange;font-size: 20px">价格:
+                <span>{{ furniture.price }}</span>
+            </label>
+        </div>
+        <div><label style="font-size: 20px">销量:
+            <span style="color: #e43725;font-size: 20px">
+            {{ furniture.sales }}</span>
+        </label></div>
+    </div>
+    <div id="op">
+        <p style="font-size: 24px;text-align: center">火爆程度</p>
+        <span>星星星</span>
+        <div class="cart btn-success" style="margin: 5px;">
+            <a href="{% url 'tocart' %}" style="color:orangered;text-decoration: none; font-size:22px;">
+                <b>加入购物车</b>
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr color="purple" size="10px">
+<h3>评论区</h3>
+<div style="margin-left: 50px;">
+    {% if comments %}
+
+        <table id="huifu" style="margin:10px;padding: 10px;">
+            {% for comment in comments %}
+                <tr>
+                    <td style="margin-bottom: 20px;padding: 10px;"><a href="#">{{ comment.user.uname }}</a></td>
+                    <td width="30px"></td>
+                    <td>{{ comment.created_time }}</td>
+                    <td width="400px"></td>
+                </tr>
+                <tr class="hui">
+                    <td width="50px"></td>
+                    <td style="margin: 20px;"colspan="3"><span style="font-size: 18px"><b>{{ comment.content }}</b></span></td>
+                    <td><button onclick="huifu(this)" accesskey="{{ comment.id }}">回复</button></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>还没有任何评论哟</p>
+    {% endif %}
+</div>
+<br/>
+<br/>
+<div style="margin: 10px">
+    <h4>我的评论</h4>
+    <textarea class="area"></textarea>
+    <br/>
+    <button onclick="publish(this)" class="btn btn-primary">发表</button>
+</div>
+</body>
+{% block script %}
+    <script>
+        //$.ajaxSetup({
+          //  data: {csrfmiddlewaretoken: ''},
+        //});
+
+        function publish(obj) {
+            var content = $(".area").val();
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: 'http://127.0.0.1:8000/index/detail/' + {{ furniture.id }} +'/',
+                data: JSON.stringify({"content": content}),
+                contentType: "application/json",
+                success: function (resp) {
+                    {#console.log(resp);#}
+                    alert(resp);
+                }
+            });
+
+        }
+    function huifu(obj) {
+        var insertHtml = '<tr><td><textarea class="tot"></textarea></td></tr>' +
+            '<tr><td><button onclick=to()>回复</button><td></tr>';
+        $(".hui").after(insertHtml);
+        id = parseInt($(obj).attr("accesskey"));
+        console.log(id);
+    }
+    function to(obj) {
+        var content = $(".tot").val();
+        $.post(
+            'http://127.0.0.1:8000/index/reply/' +id+'/',
+            JSON.stringify({"content":content})
+        );
+        window.location.reload();
+    }
+    </script>
+{% endblock %}
+</html>
