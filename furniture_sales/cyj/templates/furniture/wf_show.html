@@ -25,7 +25,7 @@
             {% for wofang in list.object_list|slice:"4" %}
                 <td width="300px" class="img">
                     <a href="{% url 'detail' wofang.id %}">
-                        <img class="pic" src="/static/images/wofang/{{ wofang.img }}">
+                        <img class="pic" src="/static/images/{{ wofang.img }}">
                     </a>
                 </td>
                 <td width="100px">
@@ -73,7 +73,11 @@
         </tr>
         <tr>
             {% for wofang in list.object_list|slice:"4:8" %}
-                <td width="300px" class="img"><img class="pic" src="/static/images/wofang/{{ wofang.img }}"></td>
+                <td width="300px" class="img">
+                <a href="{% url 'detail' wofang.id %}">
+                    <img class="pic" src="/static/images/{{ wofang.img }}">
+                </a>
+                </td>
                 <td width="100px">
                 <td>
             {% endfor %}
@@ -170,5 +174,6 @@
                 },
             })
         })
+
     </script>
 {% endblock %}

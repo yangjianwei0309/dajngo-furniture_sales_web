@@ -17,7 +17,6 @@ def ajax_post(request):
         # 接受对象id完毕
         # 得到当前登录的对象
         cyj_user = CYJ_user.objects.get(uname=request.session["cyj_user"]['uname'])
-        print(cyj_user.furniture_set.all())
         # 得到一个对应id的furniture实例
         furniture = cyj_user.furniture_set.filter(id=id).first()
         # 如果用户没有这个家具对象,创建并添加

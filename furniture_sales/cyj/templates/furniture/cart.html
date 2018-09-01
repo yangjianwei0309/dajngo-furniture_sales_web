@@ -14,6 +14,25 @@
             margin: 5px;
             padding: 5px;
         }
+
+        .isChose {
+            width:20px;
+            height: 20px;
+            background-color: yellow;
+            border-radius: 50%;
+        }
+        .isChose>span{
+            cursor: pointer;
+        }
+        #allChose {
+            width:20px;
+            height: 20px;
+            background-color: yellow;
+            border-radius: 50%;
+        }
+        #allChose>span{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -34,9 +53,10 @@
 </div>
 <table>
     {% for cart in carts %}
-        <tr>
-            <td>
-                <div class="confirm">
+        {% if cart.cnt != 0 %}
+            <tr>
+                <td>
+                    <div class="confirm">
             <span class="isChose">
                 <span id="{{ cart.id }}">
                     {% if cart.isSelected %}
@@ -44,19 +64,20 @@
                     {% endif %}
                 </span>
             </span>
-                </div>
-            </td>
-            <td><img src="/static/images/wofang/{{ cart.goods.img }}"></td>
-            <td>{{ cart.goods.content }}</td>
-            <td>{{ cart.goods.price }}</td>
-            <td>
-                <button>-</button>
-            </td>
-            <td><b>{{ cart.cnt }}</b></td>
-            <td>
-                <button>+</button>
-            </td>
-        </tr>
+                    </div>
+                </td>
+                <td><img src="/static/images/{{ cart.goods.img }}"></td>
+                <td>{{ cart.goods.content }}</td>
+                <td>{{ cart.goods.price }}</td>
+                <td>
+                    <button onclick="goodSub(this)" class="sub" data-key="{{ cart.id }}">-</button>
+                </td>
+                <td><b id="count">{{ cart.cnt }}</b></td>
+                <td>
+                    <button onclick="goodAdd(this)" class="add" data-key="{{ cart.id }}">+</button>
+                </td>
+            </tr>
+        {% endif %}
     {% endfor %}
 </table>
 <div>
@@ -82,10 +103,10 @@
             var id = spanChild.attr('id');
             if (spanChild.text().trim() == '') {
                 spanChild.text('√'); // 选择
-                console.log("选择",id);
+                console.log("选择", id);
             } else {
                 spanChild.text(''); // 取消选择
-                console.log("取消选择",id);
+                console.log("取消选择", id);
             }
             $.getJSON('/index/select/' + id + '/', function (data) {
                 console.log(data);
@@ -98,8 +119,8 @@
                     if (data.selected) {
                         // 选择
                         $("#totalPrice").text((parseFloat(tp)) + (data.price));
-                    }else{
-                       // 取消选择
+                    } else {
+                        // 取消选择
                         $("#totalPrice").text((parseFloat(tp)) - (data.price));
                     }
                 }
@@ -108,23 +129,53 @@
 
         $('#allChose').click(function () {
             var span = $(this).children().first();
-            var str = '';
-            if (span.text().trim() == ""){
-            // 全部选择
+            if (span.text().trim() == "") {
+                // 全部选择
                 span.text('√');
                 $('.isChose:first-child').text('√');
-                str = 'all'
-        }else{
+                id = 0;
+            } else {
                 span.text('');
                 $('.isChose:first-child').text('');
-                str = 'allnot'
+                id = 9999;
             }
 
             // 更新后台
-            $.getJSON('/index/allselect/'+str+'/',function (data) {
+            $.getJSON('/index/select/' + id + '/', function (data) {
                 // data = {allSelected:false,price:0}
-                    $('#totalPrice').text(data.price);
-            })
+                $('#totalPrice').text(data.price);
+                console.log(data);
+            });
+        });
+    });
+
+    // 增加购物车商品数量
+    function goodAdd(obj) {
+        var id = $(obj).attr("data-key");
+        console.log(id);
+        $.getJSON("/index/addshopping/" + id + '/', function (resp) {
+            var count = $(obj).parent().prev().children();
+            count.text(resp.count);
+            var tp = $("#totalPrice").text().trim();
+            if (resp.count > 0) {
+                $("#totalPrice").text(parseFloat(tp) + resp.price);
+            }
+            window.location.reload();
+        });
+    }
+
+    // 减少购物车商品数量
+    function goodSub(obj) {
+        var id = $(obj).attr("data-key");
+        $.getJSON("/index/subshopping/" + id + '/', function (resp) {
+            var count = $(obj).parent().next().children();
+            count.text(resp.count);
+            console.log(resp.count);
+            var tp = $("#totalPrice").text().trim();
+            if (resp.count > 0) {
+                $("#totalPrice").text(parseFloat(tp) - resp.price);
+            }
+            window.location.reload();
         })
-    })
+    }
 </script>

@@ -10,7 +10,8 @@ urlpatterns = [
     url(r'^detail/(\d+)/$',views.detail,name="detail"),
     url(r'^reply/(\d+)/$',views.reply,name="reply"),
     url(r'^add/tocart/',views.tocart,name="tocart"),
+    url(r'^addto/cart/(\d+)/',views.addtocart,name="addtocart"),
     url(r'^select/(\d+)/',views.selectCart),
-    url(r'allselect/all/',views.allselect),
-    url(r'allselect/allnot/',views.allnotselect),
+    url(r'^addshopping/(\d+)/',views.addgoods),
+    url(r'^subshopping/(\d+)/',views.subgoods),
 ]

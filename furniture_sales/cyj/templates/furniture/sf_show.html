@@ -4,13 +4,16 @@
     书房销量统计
 {% endblock %}
 {% block style %}
-    .pic{
-    width: 243px;
-    height: 186px;
-    }
-    #show td{
-    margin:100px;
-    }
+    <style>
+        .pic {
+            width: 243px;
+            height: 186px;
+        }
+
+        #show td {
+            margin: 100px;
+        }
+    </style>
 {% endblock %}
 {% block content %}
     <table id="show">
@@ -20,7 +23,11 @@
         </tr>
         <tr>
             {% for shufang in list.object_list|slice:"4" %}
-                <td width="300px" class="img"><img class="pic" src="/static/images/shufang/{{ shufang.img }}"></td>
+                <td width="300px" class="img">
+                <a href="{% url 'detail' shufang.id %}">
+                    <img class="pic" src="/static/images/{{ shufang.img }}">
+                </a>
+                </td>
                 <td width="100px">
                 <td>
             {% endfor %}
@@ -66,7 +73,11 @@
         </tr>
         <tr>
             {% for shufang in list.object_list|slice:"4:8" %}
-                <td width="300px" class="img"><img class="pic" src="/static/images/shufang/{{ shufang.img }}"></td>
+                <td width="300px" class="img">
+                <a href="{% url 'detail' shufang.id %}">
+                    <img class="pic" src="/static/images/{{ shufang.img }}">
+                </a>
+                </td>
                 <td width="100px">
                 <td>
             {% endfor %}

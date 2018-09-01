@@ -53,7 +53,7 @@
 <body>
 <div class="container">
     <div id="show">
-        <img class="pic" src="/static/images/wofang/{{ furniture.img }}">
+        <img class="pic" src="/static/images/{{ furniture.img }}">
         <div>
             <label>
                 <span class="cont">{{ furniture.content }}</span>
@@ -73,9 +73,7 @@
         <p style="font-size: 24px;text-align: center">火爆程度</p>
         <span>星星星</span>
         <div class="cart btn-success" style="margin: 5px;">
-            <a href="{% url 'tocart' %}" style="color:orangered;text-decoration: none; font-size:22px;">
-                <b>加入购物车</b>
-            </a>
+                <b id="cart" data-key="{{ furniture.id }}" style="cursor: pointer">加入购物车</b>
         </div>
     </div>
 </div>
@@ -149,6 +147,17 @@
         );
         window.location.reload();
     }
+
+    $("#cart").click(function (obj) {
+        var id = $("#cart").attr("data-key");
+        console.log(id);
+        $.getJSON("/index/addto/cart/"+id+'/',function (resp) {
+            console.log(resp);
+            if(resp.status=200){
+                confirm("成功加入购物车");
+            }
+        })
+    })
     </script>
 {% endblock %}
 </html>

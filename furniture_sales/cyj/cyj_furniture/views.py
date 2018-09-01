@@ -1,5 +1,5 @@
 import json
-
+import logging
 from django.db.models import Sum
 from django.shortcuts import render, redirect, reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +10,8 @@ from cyj_user.models import CYJ_user
 
 # Create your views here.
 from cyj_user.models import Comment
-
+# 日志对象
+logger = logging.getLogger('mdjango')
 
 @csrf_exempt
 def wf_show(request):
@@ -118,20 +119,46 @@ def reply(request,id):
         return HttpResponse("请先登录")
 
 def tocart(request):
+        if request.session.get("cyj_user"):
+            cyj_user = CYJ_user.objects.get(pk=request.session.get("cyj_user").get("uid"))
+            address = cyj_user.deliveryaddress_set.get(user_id=request.session.get("cyj_user").get("uid"))
+            carts = cyj_user.cart_set.filter(user_id=request.session.get("cyj_user").get("uid"))
+            totalPrice = 0
+            for cart in carts:
+                if cart.isSelected:
+                    totalPrice += cart.goods.price * cart.cnt
+            return render(request,'furniture/cart.html',locals())
+        else:
+            return JsonResponse({"msg":"未登录，请先登录"},status=401,safe=False)
+
+def addtocart(request,id):
     if request.session.get("cyj_user"):
-        cyj_user = CYJ_user.objects.get(pk=request.session.get("cyj_user").get("uid"))
-        address = cyj_user.deliveryaddress_set.get(user_id=request.session.get("cyj_user").get("uid"))
-        carts = cyj_user.cart_set.filter(user_id=request.session.get("cyj_user").get("uid"))
-        totalPrice = 0
-        for cart in carts:
-            if cart.isSelected:
-                totalPrice += cart.goods.price * cart.cnt
-        return render(request,'furniture/cart.html',locals())
+        try:
+            furniture = Furniture.objects.get(pk=id)
+            cart = Cart(cnt=1, isSelected=1, goods_id=furniture.id,
+                user_id=request.session.get("cyj_user").get("uid"))
+            cart.save()
+            return JsonResponse({"msg":"success"},status=200,safe=False)
+        except Exception as e:
+            logger.info(e)
     else:
         return JsonResponse({"msg":"未登录，请先登录"},status=401,safe=False)
 
 
+
+
 def selectCart(request,cart_id):
+    carts = Cart.objects.filter(user_id=request.session.get("cyj_user").get("uid"))
+    if int(cart_id) == 0:
+        carts.update(isSelected=1)
+        totalPrice = 0
+        for cart in carts:
+            totalPrice += cart.cnt * cart.goods.price
+        return JsonResponse({"price":totalPrice,"msg":"全部选择更新"},status=200,safe=False)
+    elif int(cart_id) == 9999:
+        carts.update(isSelected=0)
+        totalPrice = 0
+        return JsonResponse({"price":totalPrice,"msg":'全部取消选择'},status=200,safe=False)
     data = {"status": 200, 'price': 1000}
     try:
         cart = Cart.objects.get(id=cart_id)
@@ -144,17 +171,21 @@ def selectCart(request,cart_id):
         data['price'] = 0
     return JsonResponse(data)
 
-def allselect(request):
-    carts = Cart.objects.filter(user_id=request.session.get("cyj_user").get("uid"))
-    carts.update(isSelected=True)
-    totalPrice = 0
-    for cart in carts:
-        print()
-        totalPrice += cart.cnt * cart.goods.price
-    return JsonResponse({"status":200,"price":totalPrice})
 
-def allnotselect(request):
-    carts = Cart.objects.filter(user_id=request.session.get("cyj_user").get("uid"))
-    carts.update(isSelected=False)
-    totalPrice = 0
-    return JsonResponse({"status":200,"price":totalPrice})
+def addgoods(request,id):
+    cart = Cart.objects.get(pk=id)
+    cart.cnt += 1
+    cart.save()
+    cartPrice = cart.goods.price
+    return JsonResponse({"count":cart.cnt,'price':cartPrice},status=200,safe=False)
+
+def subgoods(request,id):
+    cart = Cart.objects.get(pk=id)
+    if cart.cnt > 0:
+        cart.cnt -= 1
+        cart.save()
+    else:
+        cart.cnt = 0
+        cart.save()
+    cartPrice = cart.goods.price
+    return JsonResponse({"count":cart.cnt,'price':cartPrice},status=200,safe=False)
