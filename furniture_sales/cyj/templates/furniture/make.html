@@ -1,0 +1,61 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+家具定制
+{% endblock %}
+{% block style %}
+    <style>
+    *{
+        margin: auto;
+        padding: 0;
+    }
+    .q{
+        font-size: 20px;
+        color: blue;
+    }
+    </style>
+{% endblock %}
+{% block content %}
+    <form>
+        <div id="type">
+        <p class="q">请选择您要定制的家具类型</p>
+        <select name="type" id="a">
+            <option value="type">床柜</option>
+            <option value="type">桌椅</option>
+            <option value="type">沙发</option>
+            <option value="type">防盗窗/门</option>
+        </select>
+        </div>
+
+        <div id="length">
+            <p class="q">请选择家具所占长度</p>
+            <select id="a2">
+                <option value="length">0.1~0.5米</option>
+                <option value="length">0.5~1.0米</option>
+                <option value="length">1.0~1.5米</option>
+                <option value="length">1.5~2.0米</option>
+                <option value="length">2米以上</option>
+            </select>
+        </div>
+
+        <div id="width">
+            <p class="q">请选择家具所占宽度</p>
+            <select id="a3">
+                <option value="length">0.1~0.5米</option>
+                <option value="length">0.5~1.0米</option>
+                <option value="length">1.0~1.5米</option>
+                <option value="length">1.5~2.0米</option>
+                <option value="length">2米以上</option>
+            </select>
+        </div>
+        <div>
+            <lable class="q2">请输入您的姓名：</lable>
+            <input type="text" name="name">
+            <lable class="q2">请输入您的家庭住址：</lable>
+            <input type="text" name="name" width="600px">
+            <lable class="q2">请输入您的联系方式：</lable>
+            86+<input type="text" name="name">
+        </div>
+        注！：<p style="color: red">您在提交后请确保您的手机处于正常状态,工作人员会在短时间之内联系您,祝您生活愉快！</p>
+        <input type="submit">
+    </form>
+{% endblock %}

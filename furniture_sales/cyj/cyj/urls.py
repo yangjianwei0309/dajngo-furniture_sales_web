@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',views.home,name="home"),
     url(r'^index/',include("cyj_furniture.urls")),
+    url(r'^make/',views.make,name="make"),
     url(r'^user/',include("cyj_user.urls")),
     url(r'api/',include(api.urls)),
 ]

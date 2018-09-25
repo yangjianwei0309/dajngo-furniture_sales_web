@@ -1,0 +1,179 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+    {{ name }}
+{% endblock %}
+{% block style %}
+    <style>
+        .pic {
+            width: 243px;
+            height: 186px;
+        }
+
+        #show td {
+            margin: 100px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <table id="show">
+        <tr>
+            <td colspan="3">{{ name }}家具 按销量从大至小排名</td>
+            <td></td>
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4" %}
+                <td width="300px" class="img">
+                    <a href="{% url 'detail' furniture.id %}">
+                        <img class="pic" src="/static/images/furnitures/{{ furniture.img }}">
+                    </a>
+                </td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4" %}
+                <td width="300" class="content_font">{{ furniture.content }}</td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ furniture.price }}元</span></td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ furniture.sales }}笔</span></td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ furniture.url }}" target="_blank">淘宝链接</a>
+                    {% if furniture.isfavorite %}
+                        <span class="isfavorite glyphicon glyphicon-heart"
+                              aria-valuetext="{{ furniture.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                              aria-valuetext="{{ furniture.id }}"></span>
+                    {% endif %}
+                </td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4:8" %}
+                <td width="300px" class="img">
+                <a href="{% url 'detail' furniture.id %}">
+                    <img class="pic" src="/static/images/furnitures/{{ furniture.img }}">
+                </a>
+                </td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4:8" %}
+                <td width="300" class="content_font">{{ furniture.content }}</td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4:8" %}
+                <td width="300" class="price_font">价格:
+                    <span style="color: orange;">{{ furniture.price }}元</span></td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4:8" %}
+                <td width="300" class="sales">销量：
+                    <span style="color: red">{{ furniture.sales }}笔</span></td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for furniture in list.object_list|slice:"4:8" %}
+                <td width="300" class="url">链接：
+                    <a href="{{ furniture.url }}" target="_blank">淘宝链接</a>
+                    {% if furniture.isfavorite %}
+                        <span class="isfavorite glyphicon glyphicon-heart"
+                              aria-valuetext="{{ furniture.id }}"></span>
+                    {% else %}
+                        <span class="isfavorite glyphicon glyphicon-heart-empty"
+                              aria-valuetext="{{ furniture.id }}"></span>
+                    {% endif %}
+                </td>
+                <td width="100px">
+                <td>
+            {% endfor %}
+        </tr>
+    </table>
+    <nav style="text-align: center;margin-top:50px;" aria-label="Page navigation">
+    <ul class="pagination">
+    {% if list.has_previous %}
+        <li>
+            <a href="?page={{ list.previous_page.number }}" aria-label="上一页">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+    {% endif %}
+    {% for pg in list.paginator.page_range %}
+        {% if list.number == pg %}
+            <li class="active">
+                <a href="?page={{ pg }}">{{ pg }}</a>
+            </li>
+        {% else %}
+            <li><a href="?page={{ pg }}">{{ pg }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if list.has_next %}
+        <li>
+            <a href="?page={{ list.next_page.number }}" aria-label="下一页">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+    {% endif %}
+
+{% endblock %}
+{% block script %}
+    <script>
+        $(".isfavorite").click(function () {
+            if ($(this).hasClass("glyphicon glyphicon-heart-empty")) {
+                $(this).removeClass("glyphicon glyphicon-heart-empty");
+                $(this).addClass("glyphicon glyphicon-heart");
+            }
+            else {
+                $(this).removeClass("glyphicon glyphicon-heart");
+                $(this).addClass("glyphicon glyphicon-heart-empty");
+            }
+            var id = $(this).attr("aria-valuetext");
+            {#console.log(id);#}
+            var tag_id = {{ tag_id }};
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:8000/index/furnitures/" + tag_id + "/",
+                data: {
+                    "id": id
+                },
+                contentType: "application/json",
+                success: function (data) {
+                    confirm(data.content);
+                },
+            });
+        })
+    </script>
+{% endblock %}

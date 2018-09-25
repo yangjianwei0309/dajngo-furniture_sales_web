@@ -104,7 +104,7 @@ class FashionInfoDownloaderMiddleware(object):
         # - return a Response object
         # - return a Request object
         # - or raise IgnoreRequest
-        print(response)
+        # print(response)
         return response
 
     def process_exception(self, request, exception, spider):

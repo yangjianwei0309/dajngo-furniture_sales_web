@@ -2,13 +2,19 @@ from django.shortcuts import render,redirect,reverse
 from django.db.models import Q
 from django.contrib.auth.hashers import make_password,check_password
 from cyj_user.models import CYJ_user
+from cyj_furniture.models import Furniture,TypeInfo
 from api.decorators import after_login
 
 # Create your views here.
 
 def home(request):
     if request.method == "GET":
-        return render(request,'furniture/index.html')
+        typeof = TypeInfo.objects.all()# 全部分类
+        return render(request,'furniture/index.html',locals())
+
+def make(request):
+    if request.method == "GET":
+        return render(request,'furniture/make.html')
 
 def user_register(request):
     # get请求

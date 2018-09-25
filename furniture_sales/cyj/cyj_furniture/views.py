@@ -14,6 +14,25 @@ from cyj_user.models import Comment
 logger = logging.getLogger('mdjango')
 
 @csrf_exempt
+def furniture_show(request,tag_id):
+    if request.method == "GET":
+        # 家具商品的展示
+        tag_id = int(tag_id)
+        furnitures = get_furnitures(request,category=tag_id-1)
+        try:
+            typeof = TypeInfo.objects.all()
+            type = TypeInfo.objects.get(pk=tag_id)
+            fname = type.fstyle
+            id = type.id
+        except Exception as e:
+            logging.getLogger().error(e)
+        return render(request,'furniture/furnitures_show.html',{"list":furnitures,"name":fname,"typeof":typeof,
+                                                                "tag_id":id})
+
+    elif request.method == "POST":
+        return ajax_post(request)
+
+@csrf_exempt
 def wf_show(request):
     if request.method == "GET":
         # 该页的家具

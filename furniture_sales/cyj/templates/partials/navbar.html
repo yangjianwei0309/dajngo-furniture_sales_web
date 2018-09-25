@@ -74,14 +74,18 @@
     <tr>
         <td width="100%">
             <ul id="index">
-                <li><a class="dh" href="{% url 'home' %}">首页</a></li>
-                <li>|<a class="dh" href="{% url 'wf' %}">卧房</a></li>
-                <li>|<a class="dh" href="{% url 'kt' %}">客厅</a></li>
-                <li>|<a class="dh" href="{% url 'ct' %}">餐厅</a></li>
-                <li>|<a class="dh" href="{% url 'sf' %}">书房</a></li>
-                <li>|<a class="dh" href="">儿童房</a></li>
-                <li>|<a class="dh" href="">卫浴</a></li>
-                <li>|<a class="dh" href="">定制家具</a></li>
+                <li><a class="dh" href="/">首页</a></li>
+{#                <li>|<a class="dh" href="">卧房</a></li>#}
+{#                <li>|<a class="dh" href="">客厅</a></li>#}
+{#                <li>|<a class="dh" href="">餐厅</a></li>#}
+{#                <li>|<a class="dh" href="">书房</a></li>#}
+{#                <li>|<a class="dh" href="">儿童房</a></li>#}
+{#                <li>|<a class="dh" href="">卫浴</a></li>#}
+{#                <li>|<a class="dh" href="">定制家具</a></li>#}
+                {% for type in typeof %}
+                    <li>|<a class="dh" href="/index/furnitures/{{ type.id }}/">{{ type.fstyle }}</a></li>
+                {% endfor %}
+                <li>|<a class="dh" href="{% url 'make' %}">定制家具</a></li>
             </ul>
         </td>
     </tr>

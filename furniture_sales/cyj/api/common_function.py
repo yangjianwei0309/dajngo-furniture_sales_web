@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from cyj_furniture.models import Furniture,TypeInfo
 from cyj_user.models import CYJ_user
@@ -26,13 +26,13 @@ def ajax_post(request):
             new_furniture.isfavorite = 1
             cyj_user.furniture_set.add(new_furniture)
             # 对应id的家具对象被添加到用户下
-            return HttpResponse("收藏成功")
+            return JsonResponse({"content":"收藏成功啦！"},status=201,safe=False)
         else:
             # 直接删除用户下的这个对象
             cyj_user.furniture_set.remove(furniture)
-            return HttpResponse("取消成功")
+            return JsonResponse({"content":"取消成功！"},status=201,safe=False)
 
-    return HttpResponse("请先登录！")
+    return JsonResponse({"content":"请先登录！"},status=201,safe=False)
 
 """
 以分页形式来获取家具商品的信息

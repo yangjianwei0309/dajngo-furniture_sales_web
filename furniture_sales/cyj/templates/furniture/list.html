@@ -11,7 +11,7 @@
     <div class="list" style="width: 100%;">
         <table width="100%">
            {% for furniture in search_list %}
-               <tr><td><a href="">{{ furniture.content }}</a></td><tr>
+               <tr><td><a href="{% url 'detail' furniture.id %}">{{ furniture.content }}</a></td><tr>
             {% endfor %}
         </table>
     </div>

@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'api.tag_context.all_tag',
             ],
         },
     },
@@ -82,9 +83,9 @@ WSGI_APPLICATION = 'cyj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'project',
+        'NAME':'cyj',
         'USER':'root',
-        'PASSWORD':'842655',
+        'PASSWORD':'taeyeon',
         'HOST':'127.0.0.1',
         'PORT':3306,
     }

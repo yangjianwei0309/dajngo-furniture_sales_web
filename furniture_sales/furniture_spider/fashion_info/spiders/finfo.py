@@ -5,10 +5,7 @@ import logging
 import scrapy
 from fashion_info.items import FashionInfoItem
 
-start_urls = ["https://s.taobao.com/search?initiative_id=tbindexz_20170306&ie=utf8&spm=a21bo."
-                "2017.201856-taobao-item.2&sourceId=tb.index&search_type=item&ssid=s5-e&commend=all"
-                "&imgfile=&q=%E5%8D%A7%E6%88%BF%E5%AE%B6%E5%85%B7&suggest=history_1&_input_charset="
-                "utf-8&wq=&suggest_query=&source=suggest"]
+start_urls = ["https://s.taobao.com/search?q=%E5%8D%A7%E6%88%BF&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180924&ie=utf8"]
 class FinfoSpider(scrapy.Spider):
     name = 'finfo'
     allowed_domains = ["taobao.com"]
@@ -20,7 +17,7 @@ class FinfoSpider(scrapy.Spider):
         :return:
         """
         print("################################################")
-        urls = ["https://s.taobao.com/search?ie=utf8&initiative_id=staobaoz_20180802&stats_click=search_radio_all%3A1&js=1&imgfile=&q=%E9%A4%90%E5%8E%85%E5%AE%B6%E5%85%B7&suggest=history_1&_input_charset=utf-8&wq=%E9%A4%90%E5%8E%85&suggest_query=%E9%A4%90%E5%8E%85&source=suggest"]
+        urls = ["https://s.taobao.com/search?q=%E5%8D%AB%E6%B5%B4&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20180924&ie=utf8"]
         for url in urls:
             req = scrapy.Request(url=url,meta={"selenium_url":True},callback=self.parse)
             yield req
@@ -74,12 +71,11 @@ class FinfoSpider(scrapy.Spider):
             # //div[@id="listsrp-itemlist"]/div/div/div[1]/div/div[3]/div[1]/div[1]/strong/text()
             price = cloth.xpath('.//div[2]/div[1]/div[1]/strong/text()').extract_first()
             # 图片名 //div[@id="listsrp-itemlist"]/div/div/div[1]/div/div[1]/div/div[1]/a/img
-            img = cloth.xpath('.//div[1]/div[1]/div[1]/a/img/@src').extract_first().replace(" ","")
+            img = cloth.xpath('.//div[1]/div[1]/div[1]/a/img/@src | .//div[1]/div[1]/div[1]/a/img/@data-src').extract_first().replace(" ","")
             full_img = "https:" + img
             print(full_img)
-            file_name = "%s.webp"%(content[0:10])
-            file_path = os.path.join("/home/gangge/Desktop/practise/spider_prac/day15/"
-                                     "fashion_sales/meimei/static/images/canting",file_name)
+            file_name = "%s.jpeg"%(content[0:10])
+            file_path = os.path.join("/home/yjw/桌面/MyPro/dajngo-furniture_sales_web/furniture_sales/cyj/static/images/furnitures",file_name)
             print(file_path)
             urlretrieve(full_img,file_path)
             # 销量 //div[@id="listsrp-itemlist"]/div/div/div[1]/div/div[3]/div[1]/div[2]/text()
