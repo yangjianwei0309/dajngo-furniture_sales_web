@@ -15,7 +15,7 @@ cryptography==2.3
 cssselect==1.0.3
 defusedxml==0.5.0
 diff-match-patch==20121119
-Django==1.11
+Django==1.11.29
 django-celery==3.2.2
 django-crispy-forms==1.7.2
 django-formtools==2.1
